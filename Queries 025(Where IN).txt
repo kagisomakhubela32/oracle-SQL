@@ -1,0 +1,27 @@
+Query 1: ________________________
+SELECT District, CName, CountryCode
+FROM City
+WHERE CountryCode IN ('AFG', 'ZAF', 'RSA')
+
+Query 2: ________________________
+SELECT District, CName, CountryCode
+FROM City
+WHERE CountryCode like '[A,Z,R]%'
+
+// last two are NOT the same!
+
+Query 5: ________________________
+SELECT CountryName, Continent
+FROM Country
+WHERE Continent IN (1,2)
+
+Query 6: ________________________
+SELECT CountryName, Continent
+FROM Country
+WHERE Continent < 3
+
+Query 7: ________________________
+SELECT CountryName, SurfaceArea  as [Square KM]
+FROM Country
+WHERE SurfaceArea < 99000
+

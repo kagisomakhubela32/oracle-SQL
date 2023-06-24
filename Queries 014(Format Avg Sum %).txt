@@ -1,0 +1,86 @@
+Query 1: ________________________
+SELECT Avg(LifeExpectancy)
+FROM Country
+WHERE Continent = 1
+AND LifeExpectancy is not NULL
+
+Query 2: ________________________
+SELECT Avg(LifeExpectancy)
+FROM Country
+WHERE Continent < 7
+AND LifeExpectancy is not NULL
+Group BY Continent
+
+Query 3: ________________________
+SELECT Round(Avg(LifeExpectancy),2) as [Avg Life Expectancy]
+FROM Country
+WHERE Continent = 1
+AND LifeExpectancy is not NULL
+
+Query 4: ________________________
+SELECT Round(Avg(LifeExpectancy),2) as [Avg Life Expectancy]
+FROM Country
+WHERE Continent < 8
+AND LifeExpectancy is not NULL
+
+Query 5: ________________________
+SELECT Round(Avg(LifeExpectancy),2) as [Avg Life Expectancy]
+FROM Country
+WHERE Continent < 8
+AND LifeExpectancy is not NULL
+Group BY Continent
+
+Query 6: ________________________
+SELECT Round(Avg(LifeExpectancy),2) as [Avg Life Expectancy], 
+Continent
+FROM Country
+WHERE Continent < 8
+AND LifeExpectancy is not NULL
+Group BY Continent
+
+Query 7: ________________________
+SELECT Avg(GNP)
+FROM Country
+
+Query 7b: ________________________
+SELECT Format(Avg(GNP), '# ##0.0')
+FROM Country
+
+Query 8: ________________________
+SELECT Format(Avg(GNP), 'Fixed')
+FROM Country
+
+Query 9: ________________________
+SELECT Format(Avg(GNP), 'Currency')
+FROM Country
+
+Query 10: ________________________
+SELECT Format(Avg(GNP), 'Currency') as GNP
+FROM Country
+
+Query 11: ________________________
+SELECT CountryName, GNP From Country 
+WHERE GNP <  
+(SELECT Format(Avg(GNP), 'Currency') as GNP
+FROM Country)
+
+Query 11b: ________________________
+SELECT CountryName, Format(GNP, 'Currency') as GNP 
+From Country 
+WHERE GNP < (SELECT Avg(GNP) From Country)
+
+Query 12: ________________________
+SELECT CountryName, GNP, GNP * 1.1 as [10% Increase]
+FROM Country
+
+Query 13: ________________________
+SELECT SUM(SurfaceArea) as [Surface of Africa Sq Km]
+FROM Country
+WHERE Continent = 1
+
+Query 14: _______________________ show two decimal places
+SELECT CountryCode, Country, Population, 
+Format ([GDP per Capita], "#,##0.00")
+FROM OlympPopulation
+WHERE [GDP per Capita]  is NOT null
+order by [GDP per Capita] ASC

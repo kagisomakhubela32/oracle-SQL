@@ -1,0 +1,383 @@
+SQL prc
+
+chapter 3;
+
+-- ussing single row functions
+1,
+COL CNo FORMAT 9999
+
+select  CNo, MemberOf, Surname, SUBSTR(UPPER(FName),1,1)
+FROM f_customer;
+
+2,
+select MemberOf||' '|| Surname||' '|| SUBSTR(UPPER(FName),1,1)||' '|| TO_CHAR(JoinDate,'FMDAY DD - MONTH - YYYY') "customer infor"
+FROM f_customer;   
+
+
+chapter 4;
+
+joints.
+
+--This sql code joins the f_owner and f_retaurant tables from fine for food
+
+SELECT o.surname||' '|| UPPER(o.initials)||' is the owner of '|| r.name "owners info", r.rtype, r.sex
+FROM f_owner o, f_restaurant r
+WHERE o.ownerid = r.ownerid
+AND r.sex = 'M';
+
+-- This sql code joins the f_customer, f_order and f_deliveryman
+
+SELECT C.surname||' '||C.fname "CUSTOMER INFOR", O.ptcode, o.collect, D.surname, D.fnames
+FROM f_customer C, f_order O, f_deliveryman D
+WHERE C.cno = O.cno
+AND O.dmcellno = D.dmcellno
+AND collect = 'Y';
+
+chapter 5
+
+
+
+chapter 6
+
+subqueries
+
+-- subqueries sre communds that run inside the a communde in the 
+-- select statement in other words it is a select statement inside
+-- a where statement 
+
+-- EG 1 from the f_rmitem table
+-- where we determine all the prices of items that are > 
+-- than that of [300ml Soda Drink] = {18.5}
+
+-- single row subquery  
+SELECT ItemDesc, ItemPrice, CatCode
+FROM f_rmitem
+WHERE ItemPrice > (select ItemPrice -- single row subquery
+					from f_rmitem
+					where ItemDesc = '300ml Soda Drink');
+	
+-- multiple row subquery output
+-- this is where we will use the any, in, exists, all opporetors	
+-- EG 2 	
+-- in this eg we will use the CatCode vatiable to test
+
+-- multiple subqueries using (any) opporetor
+SELECT ItemDesc, ItemPrice, CatCode
+FROM f_rmitem
+WHERE ItemPrice > any (SELECT ItemPrice -- note the (any) before the >
+					   FROM f_rmitem
+					   WHERE CatCode = 'SS');
+
+-- multiple subqueries using (in) opporetor
+SELECT ItemDesc, ItemPrice, CatCode
+FROM f_rmitem
+WHERE ItemPrice in (SELECT ItemPrice -- note the (in) before the >
+					  FROM f_rmitem
+					  WHERE CatCode = 'SS');
+
+-- Testing (in) and (or)
+SELECT ItemDesc, ItemPrice, CatCode
+FROM f_rmitem
+WHERE ItemPrice > any (SELECT ItemPrice -- note the (in) before the >
+					  FROM f_rmitem
+					  WHERE CatCode = 'SS' OR CatCode = 'DR');					
+
+-- EG 3 from  F_ORDER and  F_ORDITEM 
+-- where Ono is the commone vatiable
+ 
+SELECT O.Delivered, O.Collect, M.Quantity, M.OItem 
+FROM F_ORDER O, F_ORDITEM M  
+WHERE O.Ono = M.Ono
+and  M.RMItem# > (SELECT M.RMItem#
+				  from F_ORDER O, F_ORDITEM M
+				  where O.Ono = M.Ono
+				  and M.Ono = '109');
+				  
+				  
+				  
+Chapter 7 
+
+Producing Readable Output with iSQLPLUS
+
+-- the single "&" symbol is usred to prompt the user 
+-- to input information
+
+-- eg 1 using single "&" symbol
+--Request catcode from the user and then display the details of this catcode
+select *
+from f_rmitem
+where CatCode = UPPER('&entercode');
+
+-- {DEFINE}
+-- with the (DEFINE) statement ther is no need for / to prompt the user
+-- you simply declear the vatiable then equet it to what ever u wish to find
+ 
+-- eg 2 Using the (define) opporetor
+DEFINE eCatCode = dr
+select *
+from f_rmitem
+where CatCode =  UPPER('&eCatCode');
+
+-- double {&&}
+-- with the && the user is only promted only ones
+-- for a single vatiable that can be used multiple times
+
+-- eg 3 using (&&) opperetor
+SELECT ItemDesc, &&price_colm
+FROM f_rmitem
+ORDER BY &price_colm; 
+
+-- (COL FORMAT) opporetor
+
+-- the COL FORMAT opporetor is used to set the format of
+-- numbers
+
+-- eg 4
+col Ono format L999
+COL RMItem# FORMAT 99
+COL OItem FORMAT 9
+
+SELECT Ono, 'R'||RMItem# PRICE, OItem 
+from f_orditem; 
+
+
+chapter 8
+
+manipulating dat using DML in a row(s)
+
+-- Using the (INSERT) statement
+-- the insert statement is used to insert information
+-- in a row
+
+-- eg 1 using the (INSERT) command in the f_deliveryman table
+INSERT INTO f_deliveryman(DMCellNo,Surname,FNames,IdNo,DLCode) 
+VALUES(0627412130, 'Makhub', 'kagiso', 970403526080, 'B');
+
+-- eg 2 using (INSERT) command FROM f_driverlicense
+INSERT INTO f_driverlicense
+VALUES('C2', 'over hight');
+
+-- You can prompt users to enter/INSERT the information 
+-- needed
+
+-- eg 3 prompt users to INSERT infromation into the
+-- f_category table
+INSERT INTO f_category
+VALUES('&Catg_code','&Cat_desc');
+
+-- Using the (Update) command 
+-- the (update)command is used update information in a
+-- table
+
+-- eg 4 using the update command from the f_owner table
+INSERT INTO f_owner
+VALUES(5, 'Makhubela', 'KT', 216947533, 'Kmakhubela@gmail.com');
+
+SELECT * 
+FROM f_owner;
+
+UPDATE f_owner
+SET CellNo = '0627412130'
+WHERE  OwnerId = 5;
+
+SELECT * 
+FROM f_owner;
+
+UPDATE f_owner
+SET Surname = 'Nkosana'
+WHERE ownerid = 3;
+
+-- using the (delete) command
+-- the delete command is used to remove recods from a table
+
+-- eg 5 usnig the delete command from the f_owner table
+DELETE FROM f_owner
+WHERE Surname = 'Makhubela';
+
+SELECT * 
+FROM f_owner;
+
+
+chapter 9
+
+creating and managing tables
+
+-- creating tables
+-- we use the (CREAT TABLE) statement to create a new table
+
+-- eg 1 creating a new table called f_employees
+CREATE TABLE f_employees(surname  VARCHAR2(20),
+						 name VARCHAR2(20),
+						 employee_id number(5),
+						 cellphone_num char(10),
+						 salaty number(7,2),
+						 depatment_ID char(4),
+						 depatment_name VARCHAR2(20));
+						 
+-- using the (ALTER THABLE) this statement is used
+-- to alter columns in a table
+-- we can use the alter statement to do the following:
+-- (1) ADD ===> IS used to add columns in a table
+-- (2) MODIFY ===> IS used to rename the column and 
+-- change the data type of the that table
+-- (3) DROP ===> IS used to remove or delete columns in a table
+
+-- eg 2 using the (ADD) TO alter the table named f_employees
+ALTER TABLE f_employees
+ADD (Email char(30),
+	 id_number number(13));
+
+-- eg 3 using the (MODIFY) TO alter information in a table	 
+ALTER TABLE f_employees
+MODIFY (cellphone_num char(10));
+
+-- eg4 using the (DROP) IS used to delete/remove a column form a table
+ALTER TABLE f_employees
+drop (depatment_name);
+
+-- To remove or delete a table
+-- uses the (DROP TABLE) statement
+
+-- eg 5 using thw (DROP) COMMAND ON THE f_employees table
+DROP TABLE f_employees;
+
+-- to remove all the rows in table 
+-- use the (TRUNCATE TABLE) COMMAND
+
+-- eg 6 using the truncate table command on the f_employees
+TRUNCATE TABLE f_employees
+
+chapter 10 
+
+including constraints
+
+-- testing constraints using the f_employees table
+-- eg 1
+
+CREATE TABLE f_employees(surname  VARCHAR2(20) NOT NULL,
+						 name VARCHAR2(20) CONSTRAINT name_const NOT NULL, -- A constraint can be given a name
+						 employee_id number(5) PRIMARY KEY,
+						 cellphone_num char(10) UNIQUE, 
+						 salary number(7,2),
+						 depatment_ID char(4) UNIQUE,
+						 depatment_name VARCHAR2(20));
+						 
+
+						 
+-- eg 2 adding the Gender column and using the (check)
+-- command to list the only 2 potions 'M' OR 'F' from 
+-- the f_employees tables						 
+ALTER TABLE f_employees
+ADD (gender char(2) check(gender = 'M' OR gender = 'F'));
+
+-- you can use the (ALTER) statement to modify a constraint
+-- of an existing table
+
+--eg 3 using the add command to add a constraint in an existing table
+ALTER TABLE f_employees
+ADD constraint name_const (salary);
+
+
+
+
+
+
+-- sum2 prac
+--using the fff database
+
+SELECT INITCAP(Surname)||' '|| UPPER(SUBSTR(FName,1,1))||' joint fff on this date '|| TO_CHAR(JoinDate,'FMDDTH / MONTH / YYYY')||' phone number: '|| CellNo||' is customer type: '||CType "custormer info"
+FROM f_customer
+WHERE CType = 'O'
+ORDER BY JoinDate;
+
+
+
+CREATE TABLE f_employees(emp_name VARCHAR2(20) NOT NULL,
+						 emp_surname VARCHAR2(20) NOT NULL,
+						 emp_di number(5) primary key,
+						 emp_salary number(6,2),
+						 emp_depatment char)
+						 
+
+
+INSERT INTO f_employees
+VALUES('kagiso','makhubela',1002,5231.69,'B');
+
+INSERT INTO f_employees
+--VALUES('clement','kgaladi',1004,7231.85,'c');
+VALUES('zanele','sebiya',1005,3231.69,'A');
+
+UPDATE f_employees
+SET emp_salary = 6958.63
+WHERE emp_name = 'thabang';
+
+UPDATE f_employees
+SET emp_salary = 4526.45
+WHERE emp_di = 1005;
+
+ALTER TABLE f_employees
+MODIFY (emp_salary number(7,2));
+
+ALTER TABLE f_employees
+ADD (emp_cellphon number(10) UNIQUE);
+
+ALTER TABLE f_employees
+DROP (emp_cellphon);
+
+INSERT INTO f_employees(emp_cellphon)
+VALUES (0621472130);
+
+UPDate f_employees
+set emp_cellphon = 0627412130
+where emp_name = 'kagiso';
+
+CREATE SYNONYM friends
+FOR f_employees;
+
+ALTER TABLE f_employees
+ADD (smdate date);
+
+UPDATE f_employees
+SET smdate = SYSDATE
+WHERE emp_di = 1004;
+
+SELECT INITCAP(emp_surname)||' '|| UPPER(SUBSTR(emp_name,1,1), emp_di, emp_salary
+FROM f_employees;
+
+DESC f_employees;
+
+
+PRACT QUESTIONS
+FROM ASSINGMENT 1
+
+QUESTION 1
+
+SELECT UPPER(SUBSTR(FName,1,1))||' '|| INITCAP(Surname) "customer", Suburb, CType, TO_CHAR(JoinDate, 'FMDAY DDTH - MONTH - YYYY') 
+FROM f_customer 
+WHERE Suburb IS NOT NULL
+ORDER BY Surname
+/
+
+
+SELECT initcap(f_restaurant.name) name,initcap(f_category.catdesc) catdesc, LPAD(ROUND(AVG(f_rmitem.itemprice),1),6,'-') avarage, TO_CHAR(MIN(f_rmitem.itemprice),'L099.99') cheapest, MAX(f_rmitem.itemprice) highest
+FROM f_restaurant, f_rmitem ,f_category 
+WHERE f_restaurant.rcode=f_rmitem.rcode
+AND f_category.catcode=f_rmitem.catcode
+HAVING LENGTH(f_restaurant.name)>10
+AND AVG(f_rmitem.itemprice)>40
+GROUP BY f_restaurant.name,f_category.catdesc
+ORDER BY f_restaurant.name; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

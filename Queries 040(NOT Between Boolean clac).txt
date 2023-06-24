@@ -1,0 +1,55 @@
+
+Query 3: ________________________
+SELECT CountryCode, LanguageX, IsOfficial
+FROM CountryLanguage
+WHERE IsOfficial = true 
+
+Query 4: ________________________
+SELECT CountryCode, LanguageX, IsOfficial
+FROM CountryLanguage
+WHERE IsOfficial like true 
+
+Query 5: ________________________
+SELECT CountryCode, LanguageX, IsOfficial
+FROM CountryLanguage
+WHERE IsOfficial NOT like true 
+
+Query 6: ________________________
+SELECT CountryCode, LanguageX, IsOfficial, Percentage  
+FROM CountryLanguage
+WHERE IsOfficial like true 
+
+Query 9: ________________________ // A '+' doesn't work HERE!
+SELECT CountryCode, LanguageX, IsOfficial, (Percentage & ' %') as 
+[Percentage] 
+FROM CountryLanguage
+WHERE IsOfficial like true
+
+Query 10: ________________________
+SELECT CountryCode, LanguageX, IsOfficial, (Percentage & ' %') as 
+[Percentage] 
+FROM CountryLanguage
+WHERE IsOfficial like true
+AND CountryCode = :CTR
+~params: CTR=RSA; 
+
+Query 11: ________________________
+SELECT CountryName, Continent, SurfaceArea, Population
+FROM Country
+WHERE Population  BETWEEN 40100200 AND 80100200
+
+Query 12: ________________________
+SELECT CountryName, Continent, IndepYear
+FROM Country
+WHERE IndepYear BETWEEN '1950' AND '1980'
+
+Query 13: ________________________
+SELECT CountryName, Continent, IndepnYear
+FROM Country
+WHERE IndepnYear BETWEEN #1990/01/01# AND #2000/01/01#
+
+Query 14: ________________________
+SELECT CountryName, Continent, IndepnYear
+FROM Country
+WHERE IndepnYear BETWEEN #1990/01/01# AND #2000/01/01#
+Order by IndepnYear

@@ -1,0 +1,51 @@
+
+Query 2: ________________________
+SELECT CP.Continent, CP.CountryName, CI.CName as 
+Capital
+FROM Country CP, City CI
+WHERE CP.Capital = CI.ID 
+
+Query 3: ________________________
+SELECT CP.Continent, CP.CountryName, CI.CName as 
+Capital
+FROM  Country CP
+LEFT JOIN City CI ON CP.Capital = CI.ID 
+
+Query 4: ________________________
+SELECT CP.Continent, CP.CountryName, CI.CName as 
+Capital
+FROM  Country CP
+RIGHT JOIN City CI ON CP.Capital = CI.ID 
+
+Query 5: ________________________
+SELECT CP.Continent, CP.CountryName, CI.CName as Capital
+FROM City CI RIGHT JOIN  Country CP ON CP.Capital = CI.ID 
+// Comment:
+// START with >RIGHT< table and lets join the left table's field(s)!
+
+Query 6: ________________________
+SELECT CP.Continent, CP.CountryName, CI.CName as Capital
+FROM City CI LEFT JOIN  Country CP ON CP.Capital = CI.ID 
+// Comment:
+// START >LEFT< and lets join the right table's field(s)
+//  (short) = look LEFT & JOIN right
+
+Query 7: ________________________
+SELECT CP.Continent, CP.CountryName, CI.CName as Capital
+FROM City CI 
+INNER JOIN  Country CP ON CP.Capital = CI.ID 
+// Comment:
+// INNER (only join where there is a one-one match)
+
+Query 8: ________________________
+SELECT CP.Continent, CP.CountryName, CI.CName as Capital
+FROM City CI 
+INNER JOIN  Country CP ON CP.Capital = CI.ID 
+ORDER BY CP.Continent, CP.CountryName
+
+Query 9: ________________________
+SELECT CP.CountryName, CP.LifeExpectancy, CO.ContinentName
+FROM Country CP, Continent CO
+WHERE CO.ID =  CP.Continent
+AND CP.Continent = :CI
+Order by LifeExpectancy

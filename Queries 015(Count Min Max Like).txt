@@ -1,0 +1,39 @@
+Query 1: ________________________
+SELECT Count(CountryName)
+FROM Country
+WHERE IndepYear is null
+
+Query 2: ________________________
+SELECT Count(CountryName) as [Countries NOT Independend]
+FROM Country
+WHERE IndepYear is null
+
+Query 3: ________________________
+SELECT Min(LifeExpectancy) as [Shortest Life Expectancy]
+FROM Country
+
+Query 4: ________________________xxx!
+SELECT Max(LifeExpectancy) as [Longest Life Expectancy]
+FROM Country
+
+Query 5: ________________________
+SELECT Max(LifeExpectancy) as [Longest Life Expectancy]
+FROM Country
+WHERE NOT LifeExpectancy is null 
+// Also correct!
+
+Query 6: ________________________
+SELECT CountryName
+FROM Country
+WHERE CountryName like '__r%'
+
+Query 7: ________________________
+SELECT CountryName
+FROM Country
+WHERE CountryName like '%ur%'
+
+Query 8: ________________________
+SELECT CountryName, LifeExpectancy
+FROM Country
+WHERE CountryName like '[B,P,X]%'
+

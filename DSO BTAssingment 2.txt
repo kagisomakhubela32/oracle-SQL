@@ -1,0 +1,111 @@
+DSO23BT
+PL/SQL
+Asssingment 2
+
+Question 1
+
+1.1,False
+1.2,True
+1.3,FALSE
+1.4,FALSE
+1.5,
+
+
+Question 2
+
+2.1,A
+2.2,A
+2.3,
+2.4,A
+2.5,
+
+Question 3
+
+SET SERVEROUTPUT ON
+DECLARE
+  CURSOR emp_cur IS
+    SELECT a.COUNTRY,COUNT(b.ID) AS ID
+    FROM S_CUSTOMER a,S_EMP b
+    WHERE a.SALES_REP_ID = b.ID
+    GROUP BY a.COUNTRY;
+	
+BEGIN
+  FOR emp_i IN emp_cur LOOP
+      DBMS_OUTPUT.PUT_LINE(INITCAP(emp_i.COUNTRY)||' has '||
+      emp_i.ID||' client(s)');
+  END LOOP;
+END;
+/
+
+
+Question 4
+
+SET SERVEROUTPUT ON
+DECLARE 
+
+  CURSOR cust_cur IS
+     SELECT NAME,ID,PHONE,ADDRESS,CITY
+     FROM S_CUSTOMER
+     WHERE CREDIT_RATING = (SELECT CREDIT_RATING
+                           FROM S_CUSTOMER
+                           WHERE NAME = 'Womansport');
+customer_rec cust_cur%ROWTYPE;
+BEGIN
+  OPEN cust_cur;
+     DBMS_OUTPUT.PUT_LINE('Contact Details');
+     DBMS_OUTPUT.PUT_LINE('**********************************************************');
+  LOOP
+     FETCH cust_cur INTO customer_rec;
+     
+     DBMS_OUTPUT.PUT_LINE('Name: '||customer_rec.NAME||' ('||customer_rec.ID||')');
+     DBMS_OUTPUT.PUT_LINE('Tel No: '||customer_rec.PHONE);
+     DBMS_OUTPUT.PUT_LINE('Address: '||customer_rec.ADDRESS||','||customer_rec.CITY);
+     DBMS_OUTPUT.PUT_LINE('*********************************************************');
+     
+     EXIT WHEN cust_cur%ROWCOUNT = 3;
+  END LOOP;
+END;
+/
+
+Question 5
+
+SET SERVEROUTPUT ON
+
+DECLARE
+  CURSOR Pram_Curs(minAmount NUMBER,maxAmount NUMBER) IS
+	SELECT ID, TOTAL 
+	FROM S_ORD 
+	WHERE TOTAL BETWEEN minAmount AND maxAmount;
+	
+	Pram_rec Pram_Curs%ROWTYPE;
+
+BEGIN 
+  OPEN Pram_Curs(1000,3000);
+     DBMS_OUTPUT.PUT_LINE('ORDERS THAT ARE BETWEEN R1000 AND R3000.00, RECEIVE 2% DISCOUNT ');
+     DBMS_OUTPUT.PUT_LINE('------------------------------------------------------------------');
+  LOOP
+	 FATCH Pram_Curs INTO Pram_rec;
+	 DBMS_OUTPUT.PUT_LINE('ORDER NO. '|| Pram_rec.ID ||' HAVE A TOTAL AMOUNT OF: R'||Pram_rec.TOTAL);
+	 DBMS_OUTPUT.PUT_LINE('ORDER NO. '|| Pram_rec.ID ||' HAVE A NEW TOTAL AMOUNT OF: R'||TRUNC(Pram_rec.TOTAL*(1-0.02),2));
+	EXIT WHEN Pram_Curs%NOTFOUND;
+  END LOOP
+  CLOSE Pram_Curs;
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

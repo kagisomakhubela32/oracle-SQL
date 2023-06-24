@@ -1,0 +1,49 @@
+Query 1: ________________________
+SELECT CName as [City Name], Population
+FROM City
+WHERE CountryCode = 'RSA'
+
+Query 2: ________________________
+SELECT '('+ CountryCode+') ' + CName as [(Country 
+Code) City], Population
+FROM City
+ORDER by CName Desc
+
+Query 3: ________________________
+SELECT Distinct(Year), City, Country
+FROM OlympSummer
+
+Query 4: ________________________
+SELECT Distinct(Year), City
+FROM OlympSummer
+
+Query 5: ________________________
+SELECT  District, CName as [City Name], Population
+FROM City
+WHERE CountryCode = 'RSA'
+ORDER by District, CName
+
+Query 6: ________________________
+SELECT LifeExpectancy, CountryName  
+FROM Country
+WHERE Continent = 1
+AND LifeExpectancy > 0
+
+Query 7: ________________________
+SELECT LifeExpectancy, CountryName  
+FROM Country
+WHERE Continent = 1
+AND LifeExpectancy is NOT null
+
+Query 8: ________________________
+SELECT LifeExpectancy, CountryName  
+FROM Country
+WHERE Continent = 1
+AND LifeExpectancy is NOT null
+ORDER BY LifeExpectancy  
+
+Query 9: ________________________
+SELECT Year, City, Discipline, Athlete, Country, Medal
+FROM OlympSummer
+WHERE Country = 'RSA'
+

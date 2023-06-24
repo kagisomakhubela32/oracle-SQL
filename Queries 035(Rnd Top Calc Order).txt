@@ -1,0 +1,34 @@
+Query 10: ________________________
+Select INT(15 * RND)
+
+Query 11: ________________________
+Select INT(15 * RND) as [Random 0-14]
+
+Query 15: ________________________
+Select (INT(100 * RND)/ 10) as [Random 0,0 - 9,9]
+
+Query 16: ________________________ (first 5 ...)
+SELECT Top 5 CountryName, Population
+FROM Country
+
+Query 17: _______________________ !
+SELECT Top 5 Population, CountryName
+FROM Country
+
+Query 20: ___________________ (sorting happens 1st!)
+SELECT Top 5 Population, CountryName
+FROM Country
+ORDER BY Population DESC
+
+Query 22: ________________________
+SELECT Top 5 (Population / SurfaceArea) as [People 
+per Sqr Km], CountryName
+FROM Country
+ORDER BY (Population / SurfaceArea) DESC
+
+Query 24: ________________________
+SELECT Top 12 Round(Population / SurfaceArea) as 
+[People per Sqr Km], CountryName
+FROM Country
+ORDER BY (Population / SurfaceArea) DESC
+

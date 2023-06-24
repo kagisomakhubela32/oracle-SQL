@@ -1,0 +1,55 @@
+Query 1: ________________________
+SELECT Hour(Now())
+
+Query 2: ________________________
+SELECT Minute(Now())
+
+Query 3: _________Must be & for concatenation, NOT +
+SELECT Hour(Now()) &':'& Minute(Now())
+
+Query 4: ________________________
+SELECT Hour(Now()) &':'& Format(Minute(Now()), '0#')
+
+Query 5: ________________________
+SELECT MID('ABCDEFG', 2, 3)
+
+Query 6: ________________________
+SELECT Left('ABCDEFG', 3)
+
+Query 7: ________________________
+SELECT Right('ABCDEFG', 3)
+
+Query 8: _____________xxx! Sees the IndepYear as number of days
+SELECT CountryName, CDate(IndepYear)
+FROM Country
+WHERE IndepYear is NOT null
+
+Query 9: ________________________
+SELECT CountryName, Cstr(IndepYear)
+FROM Country
+WHERE IndepYear is NOT null
+
+Query 10: ________________________
+SELECT CountryName, IndepYear - Year(Now())
+FROM Country
+WHERE IndepYear is NOT null
+
+Query 11: ________________________
+SELECT CountryName, Year(Now()) - IndepYear
+as [Years of Independents]
+FROM Country
+WHERE IndepYear is NOT null
+
+Query 12: ________________________
+SELECT Continent, Count(CountryName) as [# Dependent Countries]
+FROM Country
+WHERE IndepYear is null
+Group by Continent
+
+Query 13: ________________________
+SELECT CO.ContinentName, Count(CP.Continent) as 
+[Number of Countries]
+FROM Continent CO, Country CP
+WHERE CO.ID = CP.Continent
+Group by (CO.ContinentName)
+

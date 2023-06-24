@@ -1,0 +1,17 @@
+Query 1: ________________________
+SELECT CDate(#2017/02/03#) as NewDate
+
+Query 2: ________________________
+SELECT CDate('2017/02/03') as NewDate
+
+Query 3: ________________________
+SELECT Month(#2020/05/12#)
+
+Query 4: ________________________
+SELECT Day(22)
+
+Query 5: ________________________
+SELECT CountryName, Continent, IndepnYear
+FROM Country
+WHERE IndepnYear is NOT null
+Order by IndepnYear

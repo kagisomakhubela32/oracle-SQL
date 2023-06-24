@@ -1,0 +1,39 @@
+Query 1: ________________________
+SELECT Continent, Count(Continent)
+FROM Country
+Group BY Continent
+
+Query 2: ________________________
+SELECT Continent
+FROM Country
+Group BY Continent
+
+Query 3: ________________________
+SELECT Country, Medal
+FROM OlympSummer
+WHERE Year = 2012
+
+Query 4: ________________________
+SELECT Country, Medal
+FROM OlympSummer
+WHERE Year = 2012
+Group BY Country, Medal
+
+Query 5: ________________________
+SELECT Country, Count(Medal) as [# Medals]
+FROM OlympSummer
+WHERE Year = 2012
+Group BY Country HAVING Count(Medal) > 10
+
+Query 6: ________________________
+SELECT Country, Count(Medal) as [# Medals]
+FROM OlympSummer
+WHERE Year = 2012
+Group BY Country, Medal HAVING Count(Medal) > 10
+
+Query 7: ________________________
+SELECT Country, Medal, Count(Medal) as [# Medals]
+FROM OlympSummer
+WHERE Year = 2012
+Group BY Country, Medal HAVING Count(Medal) > 10
+

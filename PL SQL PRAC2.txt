@@ -1,0 +1,382 @@
+DSO23BT - PL\SQL
+ALL THINGS PL\SQL
+
+FOR PRACTICE
+
+INTRO TO PL\SQL
+
+
+*******************************************************************
+CHAPTER 2
+GETTING STARTED WITH PL\SQL
+
+E.G 1 -- simple output
+
+set serveroutput on;  -- serveroutput must always be  on
+
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Hello welcome to PL\SQL');
+END;
+/
+
+E.G 2 -- DECLARING variables and giving them values
+
+DECLARE
+var1 VARCHAR2(20);
+num1 NUMBER(3);
+num2 NUMBER(3);
+sum1 NUMBER(3);
+BEGIN
+var1 := 'The sum = ';
+num1 := 10;
+num2 := 30;
+SUM1 := num1 + num2;
+
+DBMS_OUTPUT.PUT_LINE(var1 || SUM1);
+END;
+/
+
+E.G 3 -- using name a select stetments in PL\SQL
+
+DECLARE
+fName VARCHAR2(25);
+salry NUMBER(11,2);
+BEGIN
+SELECT FIRST_name,SALARY 
+INTO fName,salry 
+FROM S_EMP
+WHERE ID = 10;
+DBMS_OUTPUT.PUT_LINE('NAME: '||fName||' SALARY = R' || salry ); 
+END;
+/
+
+E.G 4 -- using TYPE atribout
+-- the type atribout is used when the develeper does'nt know 
+-- max number of charectors in the data type usedO or the datatype is unknown;
+
+-- FORMULER FOR TYPE ATRIBOUT
+-- variable_name table_name. variable_name_from_the_table%TYPE; 
+DECLARE
+fName S_EMP.FIRST_name%TYPE;
+salry S_EMP.SALARY%TYPE;
+BEGIN
+SELECT FIRST_name, SALARY
+INTO fName, salry
+FROM S_EMP
+WHERE ID = 13;
+DBMS_OUTPUT.PUT_LINE('NAME: '||fName||' salary = R' ||salry);
+END;
+/
+
+E.G 5
+-- using row type atribout
+-- the row type atribout is used select a unknown
+-- data type in a particuler row
+-- with this u can declare 1 variable 
+
+DECLARE
+recod S_EMP%ROWTYPE;
+BEGIN
+SELECT *
+INTO recod
+FROM S_EMP  
+WHERE ID = 22;
+DBMS_OUTPUT.PUT_LINE('FIRST NAME: '||recod.FIRST_name);
+DBMS_OUTPUT.PUT_LINE('LAST NAME: '||recod.LAST_NAME);
+DBMS_OUTPUT.PUT_LINE('SALARY = R'||recod.SALARY);
+END;
+/
+
+***************************************************************************
+
+CHAPTER 3
+CONDITIONAL STATEMENTS
+
+E.G 1 -- USING A SINGLE (IF) STATEMENT
+
+DECLARE
+mangID NUMBER(2);
+salry NUMBER(11,2);
+fName VARCHAR2(25);
+BEGIN
+SELECT MANAGER_ID, SALARY, LAST_NAME
+INTO mangID, salry, fName
+FROM S_EMP
+WHERE ID = 5;
+DBMS_OUTPUT.PUT_LINE('Befor the increment ');
+DBMS_OUTPUT.PUT_LINE(fName ||' | '||mangID||' | '||salry);
+IF mangID = 2 THEN
+	salry := salry * (1+0.2);
+END IF;
+DBMS_OUTPUT.PUT_LINE('After the increment ');
+DBMS_OUTPUT.PUT_LINE(fName ||' | '||mangID||' | '||salry);
+end;
+/
+
+
+E.G 2 
+-- USING ROW TYPE ATRIBOUT
+
+DECLARE
+recod S_EMP%ROWTYPE;
+BEGIN
+SELECT *
+INTO recod
+FROM S_EMP
+WHERE ID = 2;
+DBMS_OUTPUT.PUT_LINE('Befor the increment ');
+DBMS_OUTPUT.PUT_LINE(recod.FIRST_NAME ||' | '||recod.MANAGER_ID||' | '||recod.SALARY);
+
+IF  recod.MANAGER_ID = 1 THEN
+	recod.SALARY := recod.SALARY * (1+0.22);
+END IF;
+DBMS_OUTPUT.PUT_LINE('After the increment ');
+DBMS_OUTPUT.PUT_LINE(recod.FIRST_NAME ||' | '||recod.MANAGER_ID||' | '||recod.SALARY);
+END;
+/
+
+EG 3
+-- Using CASE selections structuer
+
+**********************************************************************************************
+CHAPTER 4 Using Loops
+
+EG 1
+-- USNG A BASEC LOOP
+
+SET SERVEROUTPUT ON
+
+DECLARE
+
+	v_I NUMBER(3);
+	
+BEGIN
+	v_I := 0;
+	
+	LOOP
+		
+		DBMS_OUTPUT.PUT_LINE(v_I);
+		v_I := v_I + 1;
+		
+		EXIT WHEN v_I > 200;
+	END LOOP;
+END;
+/
+
+EG 2
+--TESTING A BASEC IN A TABLE S_EMP
+
+DECLARE
+
+v_recod S_EMP%ROWTYPE;
+v_I NUMBER(2);
+
+BEGIN
+	v_I := 1;
+	LOOP
+		SELECT *
+		INTO v_recod
+		FROM S_EMP
+		WHERE ID = v_I
+		
+		DBMS_OUTPUT.PUT_LINE(v_recod.ID ||' '||v_recod.FIRST_NAME||' '||v_recod.LAST_NAME||' '||v_recod.SALARY);
+		v_I := v_I + 1;
+		
+		EXIT WHEN v_I > 5;
+	END LOOP;
+END;
+/
+
+EG 3
+--TESTING WHILE LOOP
+
+DECLARE
+
+	v_I VARCHAR(2);
+
+BEGIN
+
+	v_I := 1;
+	WHILE v_I < 20 LOOP
+	
+		DBMS_OUTPUT.PUT_LINE(v_I);
+		v_I :=v_I + 1;
+	END LOOP;
+END;
+/
+
+--for loop
+
+BEGIN
+	FOR I IN 1..10 LOOP
+		DBMS_OUTPUT.PUT_LINE(I);
+	END LOOP;
+END;
+/
+
+****************************************************************
+
+chapter 5
+cursors
+
+implicit cursors
+
+
+Explicit cursors
+EG 1
+set serveroutput on
+
+DECLARE
+	v_NAME S_EMP.LAST_NAME%TYPE;
+	v_ID S_EMP.ID%TYPE;
+	v_SAL S_EMP.SALARY%TYPE;
+	v_COUNT NUMBER(20);
+	
+	CURSOR emo_CURSOR IS
+		SELECT ID, LAST_NAME, SALARY
+		FROM S_EMP;
+		--WHERE ID = v_COUNT;
+	
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('ID'||' '||'NAME'||' '||'SALARY');
+	OPEN emo_CURSOR;
+		v_COUNT := 1;
+		LOOP
+			FETCH emo_CURSOR 
+			INTO v_ID,v_NAME,v_SAL;
+			IF v_SAL > 2000 THEN
+				DBMS_OUTPUT.PUT_LINE(v_ID||' '||v_NAME||' '||v_SAL);
+			END IF;
+			v_COUNT := v_COUNT + 1;
+			EXIT WHEN v_COUNT > 10;
+		END LOOP;
+	CLOSE emo_CURSOR;
+END;
+/
+
+
+Parametized cursors
+EG 1
+
+DECLARE
+	recccod S_EMP%ROWTYPE;
+	--v_IN NUMBER(2);
+	
+	CURSOR emp_CURSS2(v_IN NUMBER) IS
+	SELECT *
+	FROM S_EMP
+	WHERE ID = v_IN;
+	
+BEGIN
+	--v_IN := 6;
+	OPEN emp_CURSS2(10);
+		WHILE emp_CURSS2%ROWCOUNT <= 10 LOOP
+		FETCH emp_CURSS2
+		INTO recccod;
+			DBMS_OUTPUT.PUT_LINE(recccod.ID||' '||recccod.LAST_NAME||' '||recccod.SALARY);
+		END LOOP;	
+	CLOSE emp_CURSS2;
+END;
+/
+
+*************************************************************************************************
+chapter 6
+exeptions
+
+basic exeptions
+eg 1
+
+SET SERVEROUTPUT ON
+
+DECLARE
+	v_SURNAME S_EMP.LAST_NAME%TYPE;
+	v_FRTNAME S_EMP.FIRST_NAME%TYPE;
+	v_ID S_EMP.ID%TYPE;
+	v_SALATY S_EMP.SALARY%TYPE;
+	v_COUNT NUMBER(3);
+	v_TOTALsAL NUMBER(10);
+
+	CURSOR EMP_CUR IS
+		SELECT LAST_NAME,SUBSTR(FIRST_NAME,1,1),ID,SALARY
+		FROM S_EMP
+		WHERE ID = v_COUNT;
+
+BEGIN
+	
+	v_COUNT := 1;
+	v_TOTALsAL := 0;
+	
+	WHILE v_COUNT < 22 LOOP
+		OPEN EMP_CUR;
+			FETCH EMP_CUR
+			INTO v_SURNAME,v_FRTNAME,v_ID,v_SALATY;
+			DBMS_OUTPUT.PUT_LINE(v_ID||' SURNAME '||v_SURNAME||' '||v_FRTNAME||' SALARY R'||v_SALATY);
+			v_COUNT := v_COUNT + 1;
+			v_TOTALsAL := v_TOTALsAL + v_SALATY;
+		CLOSE EMP_CUR;
+	END LOOP;	
+			
+			DBMS_OUTPUT.PUT_LINE(' ');
+			DBMS_OUTPUT.PUT_LINE('------------------------------------------------');
+			DBMS_OUTPUT.PUT_LINE('THE TOTAL OF ALL THE SALATIES IS: R'||v_TOTALsAL);
+			
+	EXCEPTION
+		WHEN NO_DATA_FOUND THEN
+				DBMS_OUTPUT.PUT_LINE('NO DATA IS FOUNT ');
+END;
+/
+
+*********************************************************************************************************
+PRAC 2
+
+DECLARE
+	v_SURNAME S_EMP.LAST_NAME%TYPE;
+	v_FRTNAME S_EMP.FIRST_NAME%TYPE;
+	v_ID S_EMP.ID%TYPE;
+	v_DEPID S_EMP.DEPT_ID%TYPE;
+	v_SALATY S_EMP.SALARY%TYPE;
+	v_COUNT NUMBER(3);
+	
+	CURSOR EMP_CURS IS
+		SELECT LAST_NAME,FIRST_NAME,ID,DEPT_ID,SALARY
+		FROM S_EMP
+		WHERE ID = v_COUNT; 
+		
+BEGIN
+	v_COUNT := 1;
+	WHILE v_COUNT <= 22 LOOP
+		OPEN EMP_CURS;
+			FETCH EMP_CURS
+			INTO v_SURNAME,v_FRTNAME,v_ID,v_DEPID,v_SALATY;
+			
+			IF v_DEPID = 42 THEN
+				DBMS_OUTPUT.PUT_LINE(v_ID||' '||v_SURNAME||' '||v_FRTNAME||' '||v_DEPID||' '||v_SALATY);
+			END IF;
+			v_COUNT := v_COUNT + 1;
+			
+		CLOSE EMP_CURS;
+	END LOOP;
+END;
+/	
+
+************************************************************************************************************
+PRAC 3
+
+CREATE OR REPLACE PROCEDURE 
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+

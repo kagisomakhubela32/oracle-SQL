@@ -1,0 +1,48 @@
+Query 1: ________________________
+Select Clng(567.8)
+
+Query 2: ________________________
+Select Round(567.8567, 2)
+
+Query 3: ________________________
+Select Round(567.8567, 1)
+
+Query 4: ________________________
+Select Round(567.8567, 0)
+
+Query 5: ________________________
+Select Cint('567')
+
+Query 6: ________________________
+Select Cint('568.789')
+
+Query 7: ________________________
+Select Cint(568.789)
+
+Query 8: ________________________
+Select Cstr(568.789)
+
+Query 9: ________________________
+Select Cdate('2017/03/22')
+
+Query 10: ________________________
+Select Cdate('2017/03/22') + 7
+
+Query 11: ____________________xxx! Sees 2017 as number of days from 1899/12/30
+Select Cdate('2017')
+
+Query 12: ____________________xxx!
+Select Cdate(2017)
+
+Query 13: ________________________
+SELECT CountryName, IndepYear
+FROM Country
+WHERE IndepYear is NULL
+
+// WHERE IndepYear = 0		// wouldn't deliver expected output!
+
+Query 14: ________________________
+SELECT CountryName, Len (CountryName) as [Name Length]
+FROM Country
+
+

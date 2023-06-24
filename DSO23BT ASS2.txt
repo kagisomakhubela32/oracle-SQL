@@ -1,0 +1,44 @@
+QUESTION 3
+-----------
+DECLARE
+  
+  CURSOR emp_cur IS
+    SELECT a.COUNTRY,COUNT(b.ID) AS ID
+    FROM S_CUSTOMER a,S_EMP b
+    WHERE a.SALES_REP_ID = b.ID
+    GROUP BY a.COUNTRY;
+BEGIN
+  FOR emp_i IN emp_cur LOOP
+      DBMS_OUTPUT.PUT_LINE(INITCAP(emp_i.COUNTRY)||' has '||
+                          emp_i.ID||' client(s)');
+  END LOOP;
+END;
+/
+
+QUESTION 4
+-----------
+DECLARE 
+
+  CURSOR cust_cur IS
+     SELECT NAME,ID,PHONE,ADDRESS,CITY
+     FROM S_CUSTOMER
+     WHERE CREDIT_RATING = (SELECT CREDIT_RATING
+                           FROM S_CUSTOMER
+                           WHERE NAME = 'Womansport');
+customer_rec cust_cur%ROWTYPE;
+BEGIN
+  OPEN cust_cur;
+     DBMS_OUTPUT.PUT_LINE('Contact Details');
+     DBMS_OUTPUT.PUT_LINE('***********************');
+  LOOP
+     FETCH cust_cur INTO customer_rec;
+     
+     DBMS_OUTPUT.PUT_LINE('Name: '||customer_rec.NAME||' ('||customer_rec.ID||')');
+     DBMS_OUTPUT.PUT_LINE('Tel No: '||customer_rec.PHONE);
+     DBMS_OUTPUT.PUT_LINE('Address: '||customer_rec.ADDRESS||','||customer_rec.CITY);
+     DBMS_OUTPUT.PUT_LINE('***********************');
+     --v_counter := v_counter + 1;
+     EXIT WHEN cust_cur%ROWCOUNT = 3;
+  END LOOP;
+END;
+/
